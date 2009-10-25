@@ -1,0 +1,90 @@
+#include "../RegVM/regvm.hh"
+
+#include <iostream>
+
+using namespace std;
+using namespace mvds;
+
+int main()
+{
+
+  char text[1024];
+
+  char *p = text;
+
+  *(p++) = RegVM::opTest;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 'a';
+
+  *(p++) = RegVM::opJmpNE;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 20;
+
+  *(p++) = RegVM::opShiftS;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 0;
+
+  *(p++) = RegVM::opJump;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 0;
+
+  *(p++) = RegVM::opTest;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 'b';
+
+  *(p++) = RegVM::opJmpNE;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 64;
+
+  *(p++) = RegVM::opShiftS;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 1;
+
+  *(p++) = RegVM::opJump;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 0;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 'b';
+
+  p = text + 64;
+
+  *(p++) = RegVM::opTest;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 'c';
+
+  *(p++) = RegVM::opJmpEQ;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 128;
+
+  *(p++) = RegVM::opHalt;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 1;
+
+  p = text + 128;
+
+  *(p++) = RegVM::opHalt;
+
+  *(reintrerpret_cast<uint32_t>(p)++) = 0;
+
+  vector<string> out;
+
+  RegVM vm;
+
+  RegVMProg prog(1024,text,2);
+
+  int res = vm.execute(prog,"aaaabbbbababc",out);
+
+  if (res < 0) {
+
+    cerr << "Error: " << vm.error() << endl;
+
+  } else {
+    cerr << "Succes!" << endl;
+
+    for (vector<string>::iterator i = out.begin();
+	 i != out.end(); ++i)
+      cerr << "- '" << *i << "'" << endl;
+  }
+
+  return 0;
+}

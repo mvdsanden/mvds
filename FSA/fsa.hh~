@@ -1,0 +1,15 @@
+#ifndef __INC_MVDS_FSA_HH__
+#define __INC_MVDS_FSA_HH__
+
+namespace mvds {
+
+  class FSA {
+  public:
+
+    
+
+  };
+
+};
+
+#endif // __INC_MVDS_FSA_HH__
