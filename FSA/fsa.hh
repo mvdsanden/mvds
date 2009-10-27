@@ -35,6 +35,10 @@ namespace mvds {
 
     typedef std::pair<iterator,iterator> iterator_pair;
 
+    Node(Content const &content);
+
+    Node();
+
 	/**
 	 *  @returns the content of the node.
 	 */
@@ -113,6 +117,16 @@ namespace mvds {
 
 	return node;
   }
+
+  template <class Content, class StateKey>
+  inline FSA<Content,StateKey>::Node(Content const &content)
+    : d_content(content)
+  {
+  }
+
+  template <class Content, class StateKey>
+  inline FSA<Content,StateKey>::Node() {}
+
 
   template <class Content, class StateKey>
   inline Content &FSA<Content,StateKey>::Node::content()
